@@ -6,6 +6,7 @@ import Image from "next/image";
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [language, setLanguage] = useState("english");
+  const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false); // Yangi state til menyusi uchun
 
   // Translations object
   const translations = {
@@ -244,6 +245,11 @@ export default function Home() {
     window.location.href = "mailto:said060308@gmail.com";
   };
 
+  // Til menyusini ochish/yopish funksiyasi
+  const toggleLanguageMenu = () => {
+    setIsLanguageMenuOpen(!isLanguageMenuOpen);
+  };
+
   return (
     <main className="bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 text-white min-h-screen flex flex-col">
       {/* Header */}
@@ -255,8 +261,12 @@ export default function Home() {
 
           <div className="flex items-center gap-4">
             {/* Language Switcher */}
-            <div className="relative group">
-              <button className="px-3 py-1 rounded-md bg-gray-700 hover:bg-gray-600 transition flex items-center gap-1">
+            <div className="relative">
+              <button
+                onClick={toggleLanguageMenu}
+                onTouchStart={toggleLanguageMenu} // Mobil uchun touch hodisasi
+                className="px-3 py-1 rounded-md bg-gray-700 hover:bg-gray-600 transition flex items-center gap-1"
+              >
                 <span className="text-sm">
                   {language === "english" ? "EN" : language === "uzbek" ? "UZ" : "RU"}
                 </span>
@@ -264,22 +274,35 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
-              <div className="absolute right-0 mt-1 w-20 bg-gray-800 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+              <div
+                className={`absolute right-0 mt-1 w-20 bg-gray-800 rounded-md shadow-lg transition-all duration-300 z-50 ${
+                  isLanguageMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"
+                }`}
+              >
                 <button
-                  onClick={() => setLanguage("english")}
-                  className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-700 rounded-t-md"
+                  onClick={() => {
+                    setLanguage("english");
+                    setIsLanguageMenuOpen(false);
+                  }}
+                  className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-700 rounded-t-md text-white"
                 >
                   EN
                 </button>
                 <button
-                  onClick={() => setLanguage("uzbek")}
-                  className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-700"
+                  onClick={() => {
+                    setLanguage("uzbek");
+                    setIsLanguageMenuOpen(false);
+                  }}
+                  className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-700 text-white"
                 >
                   UZ
                 </button>
                 <button
-                  onClick={() => setLanguage("russian")}
-                  className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-700 rounded-b-md"
+                  onClick={() => {
+                    setLanguage("russian");
+                    setIsLanguageMenuOpen(false);
+                  }}
+                  className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-700 rounded-b-md text-white"
                 >
                   RU
                 </button>
@@ -725,7 +748,7 @@ export default function Home() {
                 </a>
               </p>
               <p className="text-gray-300">
-                <strong>{t.address}</strong>
+                {t.address}
               </p>
             </div>
             <motion.a
